@@ -188,3 +188,41 @@ Each memory is stored as structured data:
 - LLM-assisted reminiscence therapy research
 - “Elizabeth” chatbot studies
 - Dementia care guidelines
+
+---
+
+## Prototype Framework
+
+The repository now includes a lightweight FastAPI prototype that mirrors the
+design plan. It focuses on safe prompt generation, memory upload, and session
+creation to validate the AI-assisted reminiscence flow.
+
+### Layout
+
+- `backend/app/main.py`: FastAPI entrypoint with routers for memories and sessions.
+- `backend/app/routes/`: Memory CRUD and session orchestration endpoints.
+- `backend/app/services/`: Prompt generation heuristics and session state tools.
+- `backend/app/state.py`: In-memory stores to mimic persistence during prototyping.
+- `tests/`: Pytest suite covering prompt generation and session assembly.
+
+### Quickstart
+
+1. Install dependencies: `pip install -r backend/requirements.txt`
+2. Run the API: `uvicorn backend.app.main:app --reload --port 8000`
+3. Explore interactive docs at `http://localhost:8000/docs`
+4. Execute tests: `pytest`
+
+### Example Workflow
+
+```bash
+curl -X POST http://localhost:8000/memories/ \
+  -H "Content-Type: application/json" \
+  -d '{"title": "Family picnic", "people": ["Alex"], "places": ["Central Park"], "emotional_tags": ["nostalgia"]}'
+
+curl -X POST http://localhost:8000/sessions/ \
+  -H "Content-Type: application/json" \
+  -d '{"memory_ids": ["<memory-id-from-response>"], "mode": "guided"}'
+```
+
+Use the `/sessions/preview` endpoint to review AI prompts before starting a
+session, reflecting the safety and approval steps from the design plan.
